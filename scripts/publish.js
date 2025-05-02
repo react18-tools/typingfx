@@ -65,4 +65,3 @@ try {
 
 execSync("node ./scripts/lite.js");
 execSync(`cd lib && pnpm build && npm publish ${provenance} --access public`);
-

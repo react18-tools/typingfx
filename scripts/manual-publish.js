@@ -116,4 +116,3 @@ execSync(
 
 execSync("node ./scripts/lite.js");
 execSync(publishCmd + reTag.replace("@", "-lite@"));
-
