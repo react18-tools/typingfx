@@ -17,14 +17,14 @@
     "format"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
+    "@changesets/cli": "^2.29.4",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.15.24",
     "plop": "^4.0.1",
     "prettier": "^3.5.3",
-    "turbo": "^2.5.2"
+    "turbo": "^2.5.3"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.11.0",
   "engines": {
     "node": ">=18"
   },
@@ -35,6 +35,13 @@
     "overrides": {
       "cross-spawn@<6.0.6": ">=6.0.6",
       "next@>=15.0.0 <15.2.3": ">=15.2.3"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "pre-commit",
+      "sharp",
+      "spawn-sync"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 import { HTMLProps, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./type-out.module.scss";
-import { Optional } from "@m2d/core/utils";
+import { Optional } from "@m2d/core";
 import { addAnimationListeners, listElements, setupTypingFX } from "./utils";
 
 export type ComponentAnimation = {
