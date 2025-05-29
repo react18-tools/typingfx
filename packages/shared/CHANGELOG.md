@@ -1,5 +1,12 @@
 # @repo/shared
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [2fa8061]
+  - typingfx@1.1.2
+
 ## 0.0.4
 
 ### Patch Changes

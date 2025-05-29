@@ -1,5 +1,11 @@
 # typingfx
 
+## 1.1.2
+
+### Patch Changes
+
+- 2fa8061: chore: update dependencies
+
 ## 1.1.1
 
 ### Patch Changes
