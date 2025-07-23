@@ -1,4 +1,4 @@
-import { HTMLProps, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { HTMLProps, memo, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./type-out.module.scss";
 import { Optional } from "@m2d/core";
 import { addAnimationListeners, listElements, setupTypingFX } from "./utils";
@@ -160,7 +160,7 @@ const TypingAnimation = ({
  * <TypeOut steps={["Hello", "World"]} />
  * ```
  */
-export const TypeOut = (props_: TypeOutProps) => {
+export const TypeOut = memo((props_: TypeOutProps) => {
   const { children, force, steps, ...props } = {
     ...defaultTypeOutProps,
     ...props_,
@@ -180,4 +180,4 @@ export const TypeOut = (props_: TypeOutProps) => {
   ) : (
     <TypingAnimation {...props} {...{ children, steps }} />
   );
-};
+}, () => true);
