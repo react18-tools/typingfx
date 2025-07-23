@@ -180,4 +180,4 @@ export const TypeOut = memo((props_: TypeOutProps) => {
   ) : (
     <TypingAnimation {...props} {...{ children, steps }} />
   );
-}, () => true);
+}, (props1, props2) => props1.paused === props2.paused);
