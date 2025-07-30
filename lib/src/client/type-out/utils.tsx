@@ -1,6 +1,6 @@
 import { isValidElement, ReactNode } from "react";
 import styles from "./type-out.module.scss";
-import { ComponentAnimation } from "./type-out";
+import { ComponentAnimation } from "./store";
 
 /**
  * Wraps text nodes in <span> with classes and handles nested JSX structure.

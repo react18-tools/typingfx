@@ -1,6 +1,6 @@
 "use client";
 
-import { TypeOut } from "typingfx";
+import { TypeOut, useUpdate } from "typingfx";
 import styles from "./demo.module.scss";
 import { HTMLProps, useEffect, useMemo, useState } from "react";
 
@@ -24,7 +24,7 @@ const steps = [
 ];
 /** React live demo */
 export function Demo() {
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useUpdate(state => [state.paused, state.setPaused]);
   const [user, setUser] = useState<{ name: string }>();
   useEffect(() => {
     setTimeout(() => {
@@ -44,7 +44,7 @@ export function Demo() {
   return (
     <div className={styles.demo}>
       <button onClick={() => setPaused(!paused)}>{paused ? "Resume" : "Pause"}</button>
-      <TypeOut paused={paused} steps={steps} componentAnimation={{ wrapper: "div" }}>
+      <TypeOut steps={steps} componentAnimation={{ wrapper: "div" }}>
         {welcome}
       </TypeOut>
     </div>
