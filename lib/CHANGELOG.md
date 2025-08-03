@@ -1,5 +1,25 @@
 # typingfx
 
+## 1.2.0
+
+### Minor Changes
+
+- 799d0ab: ✨ Added `useUpdate()` hook to dynamically update animation props like speed, repeat count, and pause state — without remounting the component.
+
+  Useful for interactive controls, settings panels, and live demos.
+
+### Patch Changes
+
+- 3640812: fix(typeout): memoize input props internally to prevent unnecessary re-renders
+
+  Improves performance by memoizing internal state updates.
+  Also improves DX—consumers no longer need to wrap inputs in useMemo to avoid loops.
+
+- 1441e16: chore: remove next.js from optional peerDependencies
+
+  Next.js isn't used internally—was previously listed only to signal support.
+  Better to avoid misleading consumers or triggering unnecessary warnings.
+
 ## 1.1.2
 
 ### Patch Changes
@@ -52,7 +72,6 @@
 - 189c834: Add ability to pause via pause prop, fix jsx handling
 - 3fc6417: Support custom speed per element, enhancements
 - 8130e18: Add following features
-
   - Pause animation when window/tab is hidden
   - do not animate when prefer-reduced-motion is set or repeat is 0 or negative
 
