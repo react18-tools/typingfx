@@ -157,6 +157,7 @@ export const TypeOut = memo(
         paused,
       });
       const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      // Respect reduced motion setting of OS
       const handleReducedMotion = () => setSuppressAnimation(motionQuery.matches);
       handleReducedMotion();
       motionQuery.addEventListener("change", handleReducedMotion);

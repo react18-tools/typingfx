@@ -1,4 +1,4 @@
-import { create, StateSetter, StoreCreator } from "kosha";
+import { create, StoreCreator } from "kosha";
 import { HTMLProps } from "react";
 
 export type ComponentAnimation = {
@@ -53,6 +53,9 @@ interface ITypeoutStoreActions {
   setComponentAnimation: (componentAnimation: ComponentAnimation | undefined) => void;
 }
 
+/**
+ * Store creator function for creating Kosha
+ */
 const storeCreator: StoreCreator<ICommonProps & ITypeoutStoreActions> = set => ({
   ...defaultCommonProps,
   setSpeed: speed => set({ speed }),
@@ -69,6 +72,9 @@ const defaultStore = create(storeCreator);
 
 const storeMap: Record<string, typeof defaultStore> = {};
 
+/**
+ * Creates or returns a scooped store
+ */
 export const useUpdate = (storeId?: string) => {
   if (!storeId) return defaultStore;
   storeMap[storeId] ??= create(storeCreator);
