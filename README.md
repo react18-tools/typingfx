@@ -235,17 +235,29 @@ If you want to display a number instead of pausing, convert it to a string:
 
 ~~const steps = useMemo(() => ["One", "Two", "Three"], []);~~
 
+`TypeOut` is memoized by default to **prevent unwanted animation restarts and infinite loops**.
+
 ```tsx
 <TypeOut steps={steps} />
 ```
 
-> `TypeOut` is memoized by default.
->
-> To re-run the animation on changes to `steps`, Change the `key` prop to force a remount and pick up new props
+> 🔁 It **ignores all prop changes after first render**, including `paused`, `speed`, etc.
 
-## 🪄 Update Props Dynamically (Without complete Re-render or loop traps)
+- 🧊 Props are **frozen on mount**
+- 🧠 Re-renders won't restart animation
+- ✅ To re-run animation with new `steps`, **change the `key`** to remount
 
-You can now update all the props except `steps` **on the fly** using the `useUpdate()()` hook — no need to remount or trigger full re-renders. This is ideal for dynamic UIs or interactive controls.
+```tsx
+<TypeOut key={id} steps={steps} />
+```
+
+---
+
+### 🧩 Dynamic Prop Updates (Without Re-renders or Infinite Loops)
+
+Want to **update props on the fly** (e.g., pause/resume, adjust speed) without triggering full React re-renders or loop traps?
+
+Use the `useUpdate()` hook **with double parentheses**:
 
 ```ts
 import { useUpdate } from "typeout";
@@ -256,13 +268,27 @@ export function Demo() {
   return (
     <div className={styles.demo}>
       <button onClick={() => setPaused(!paused)}>{paused ? "Resume" : "Pause"}</button>
-      <TypeOut steps={steps} id="demo" />
+      <TypeOut steps={steps} storeId="demo" />
     </div>
   );
 }
 ```
 
-> Each id creates an isolated store with its own animation state — perfect for multiple Typeout components in one view without cross-interference.
+> 🎯 `useUpdate()` returns an isolated reactive store per `id`. These updates:
+>
+> - Take effect **immediately**
+> - Don’t rely on props or re-renders
+> - Work perfectly with interactive controls
+
+---
+
+### 🔥 Important Caveats
+
+- ⚠️ `steps` **cannot be updated dynamically** — changing them requires a remount via a new `key`.
+- 💥 remounting via key will kill the current animation and start new one.
+- ✅ All other animation props are supported via `useUpdate()`.
+
+---
 
 ### ✅ Supported Setters
 
@@ -277,9 +303,8 @@ export function Demo() {
 | `setPaused(boolean)`      | Pause or resume                        |
 | `setComponentAnimation()` | Update animation for custom components |
 
-> ℹ️ These updates are local to the instance and don't require re-rendering the full `Typeout` flow.
-
-> Useful for interactive controls, settings panels, and live demos.
+> ℹ️ These updates are **instance-local**, fast, and non-intrusive.
+> Use the `storeId` prop to group/manage the animation props across TypeOut instances.
 
 ---
 

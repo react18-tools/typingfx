@@ -69,8 +69,8 @@ const defaultStore = create(storeCreator);
 
 const storeMap: Record<string, typeof defaultStore> = {};
 
-export const useUpdate = (id?: string) => {
-  if (!id) return defaultStore;
-  storeMap[id] ??= create(storeCreator);
-  return storeMap[id];
+export const useUpdate = (storeId?: string) => {
+  if (!storeId) return defaultStore;
+  storeMap[storeId] ??= create(storeCreator);
+  return storeMap[storeId];
 };

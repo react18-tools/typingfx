@@ -11,7 +11,7 @@ import { defaultCommonProps, ICommonProps, useUpdate } from "./store";
 interface DefaultTypeOutProps extends HTMLProps<HTMLDivElement>, ICommonProps {
   /** Sequence of steps (lines or phrases) to animate through. */
   steps: ReactNode[];
-  id?: string;
+  storeId?: string;
 }
 
 const defaultTypeOutProps: DefaultTypeOutProps = {
@@ -27,13 +27,13 @@ const TypingAnimation = ({
   className,
   steps,
   style,
-  id,
+  storeId,
   ...props
-}: Pick<DefaultTypeOutProps, "steps"> & HTMLProps<HTMLDivElement>) => {
+}: Pick<DefaultTypeOutProps, "steps" | "storeId"> & HTMLProps<HTMLDivElement>) => {
   const [processing, setProcessing] = useState(true);
 
   const { componentAnimation, delSpeed, noCursor, noCursorAfterAnimEnd, repeat, speed, paused } =
-    useUpdate(id)();
+    useUpdate(storeId)();
 
   const animatedSteps = useMemo(() => {
     const newSteps = children ? [...steps, children] : steps;
@@ -135,7 +135,7 @@ export const TypeOut = memo(
       speed,
       force,
       paused,
-      id,
+      storeId,
       ...props
     } = {
       ...defaultTypeOutProps,
@@ -143,10 +143,10 @@ export const TypeOut = memo(
     };
     const [suppressAnimation, setSuppressAnimation] = useState(false);
 
-    const force_ = useUpdate(id)(state => state.force);
+    const force_ = useUpdate(storeId)(state => state.force);
 
     useEffect(() => {
-      useUpdate(id).setState({
+      useUpdate(storeId).setState({
         componentAnimation,
         delSpeed,
         noCursor,
@@ -166,7 +166,7 @@ export const TypeOut = memo(
     return !force_ && suppressAnimation ? (
       <div {...props}>{steps[steps.length - 1] || children || steps[0]}</div>
     ) : (
-      <TypingAnimation {...props} {...{ children, id, steps }} />
+      <TypingAnimation {...props} {...{ children, storeId: storeId, steps }} />
     );
   },
   () => true,
