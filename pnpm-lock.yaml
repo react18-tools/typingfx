@@ -139,8 +139,8 @@ importers:
   lib:
     dependencies:
       kosha:
-        specifier: ^1.3.0
-        version: 1.3.0(@types/react@19.1.9)(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react@19.1.1)
+        specifier: ^1.3.1
+        version: 1.3.1(@types/react@19.1.9)(react@19.1.1)
     devDependencies:
       '@m2d/core':
         specifier: ^1.5.0
@@ -2522,17 +2522,14 @@ packages:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
 
-  kosha@1.3.0:
-    resolution: {integrity: sha512-lTnHwd7o9GgWU3btaLdNbB72ng46vbf/uqItzGsou/eR4XymspnI1jO8oj4aoYhWbAdW6BTtNVOdn4CxVxIo9Q==}
+  kosha@1.3.1:
+    resolution: {integrity: sha512-GUoBwFdIHVG9v4VWq/phtwfq2DhxgJWNGd6e7V7iCqHTTXImxaQEV6TIpn7LWodQxuJIEH28UvjcbTf2QCUwXA==}
     peerDependencies:
       '@types/react': '>=18'
       immer: '>=9.0.0'
-      next: '>=15.2.3'
       react: '>=18'
     peerDependenciesMeta:
       immer:
-        optional: true
-      next:
         optional: true
 
   levn@0.4.1:
@@ -6312,12 +6309,10 @@ snapshots:
 
   kind-of@6.0.3: {}
 
-  kosha@1.3.0(@types/react@19.1.9)(next@15.4.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2))(react@19.1.1):
+  kosha@1.3.1(@types/react@19.1.9)(react@19.1.1):
     dependencies:
       '@types/react': 19.1.9
       react: 19.1.1
-    optionalDependencies:
-      next: 15.4.5(@babel/core@7.28.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(sass@1.89.2)
 
   levn@0.4.1:
     dependencies:
