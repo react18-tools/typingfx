@@ -17,8 +17,8 @@ interface DefaultTypeOutProps extends HTMLProps<HTMLDivElement>, ICommonProps {
 const defaultTypeOutProps: DefaultTypeOutProps = {
   children: "",
   steps: [""],
-  ...defaultCommonProps
-}
+  ...defaultCommonProps,
+};
 
 export type TypeOutProps = Optional<DefaultTypeOutProps>;
 
@@ -32,14 +32,8 @@ const TypingAnimation = ({
 }: Pick<DefaultTypeOutProps, "steps"> & HTMLProps<HTMLDivElement>) => {
   const [processing, setProcessing] = useState(true);
 
-  const { componentAnimation,
-    delSpeed,
-    noCursor,
-    noCursorAfterAnimEnd,
-    repeat,
-    speed,
-    paused,
-  } = useUpdate(id)();
+  const { componentAnimation, delSpeed, noCursor, noCursorAfterAnimEnd, repeat, speed, paused } =
+    useUpdate(id)();
 
   const animatedSteps = useMemo(() => {
     const newSteps = children ? [...steps, children] : steps;
@@ -128,26 +122,11 @@ const TypingAnimation = ({
  * <TypeOut steps={["Hello", "World"]} />
  * ```
  */
-export const TypeOut = memo((props_: TypeOutProps) => {
-  const { children, steps, componentAnimation,
-    delSpeed,
-    noCursor,
-    noCursorAfterAnimEnd,
-    repeat,
-    speed,
-    force,
-    paused,
-    id,
-    ...props } = {
-    ...defaultTypeOutProps,
-    ...props_,
-  };
-  const [suppressAnimation, setSuppressAnimation] = useState(false);
-
-  const force_ = useUpdate(id)(state => state.force);
-
-  useEffect(() => {
-    useUpdate(id).setState({
+export const TypeOut = memo(
+  (props_: TypeOutProps) => {
+    const {
+      children,
+      steps,
       componentAnimation,
       delSpeed,
       noCursor,
@@ -155,18 +134,40 @@ export const TypeOut = memo((props_: TypeOutProps) => {
       repeat,
       speed,
       force,
-      paused
-    });
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const handleReducedMotion = () => setSuppressAnimation(motionQuery.matches);
-    handleReducedMotion();
-    motionQuery.addEventListener("change", handleReducedMotion);
-    return () => motionQuery.removeEventListener("change", handleReducedMotion);
-  }, []);
+      paused,
+      id,
+      ...props
+    } = {
+      ...defaultTypeOutProps,
+      ...props_,
+    };
+    const [suppressAnimation, setSuppressAnimation] = useState(false);
 
-  return !force_ && suppressAnimation ? (
-    <div {...props}>{steps[steps.length - 1] || children || steps[0]}</div>
-  ) : (
-    <TypingAnimation {...props} {...{ children, id, steps }} />
-  );
-}, () => true);
+    const force_ = useUpdate(id)(state => state.force);
+
+    useEffect(() => {
+      useUpdate(id).setState({
+        componentAnimation,
+        delSpeed,
+        noCursor,
+        noCursorAfterAnimEnd,
+        repeat,
+        speed,
+        force,
+        paused,
+      });
+      const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const handleReducedMotion = () => setSuppressAnimation(motionQuery.matches);
+      handleReducedMotion();
+      motionQuery.addEventListener("change", handleReducedMotion);
+      return () => motionQuery.removeEventListener("change", handleReducedMotion);
+    }, []);
+
+    return !force_ && suppressAnimation ? (
+      <div {...props}>{steps[steps.length - 1] || children || steps[0]}</div>
+    ) : (
+      <TypingAnimation {...props} {...{ children, id, steps }} />
+    );
+  },
+  () => true,
+);

@@ -72,7 +72,6 @@
 - 189c834: Add ability to pause via pause prop, fix jsx handling
 - 3fc6417: Support custom speed per element, enhancements
 - 8130e18: Add following features
-
   - Pause animation when window/tab is hidden
   - do not animate when prefer-reduced-motion is set or repeat is 0 or negative
 
