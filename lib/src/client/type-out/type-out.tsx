@@ -167,7 +167,7 @@ export const TypeOut = memo(
     return !force_ && suppressAnimation ? (
       <div {...props}>{steps[steps.length - 1] || children || steps[0]}</div>
     ) : (
-      <TypingAnimation {...props} {...{ children, storeId: storeId, steps }} />
+      <TypingAnimation {...props} {...{ children, storeId, steps }} />
     );
   },
   () => true,

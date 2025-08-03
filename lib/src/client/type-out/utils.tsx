@@ -69,6 +69,7 @@ export const setupTypingFX = (
       );
     }
 
+    /* v8 ignore next - should never reach here. */
     return node;
   };
   return steps.map(handleNode);
@@ -102,7 +103,7 @@ export const listElements = (root: HTMLElement): HTMLElement[][] => {
 /**
  * Computes differing start index for each pair of steps to know what to animate.
  */
-const compareSteps = (elements: HTMLElement[][]): number[] => {
+export const compareSteps = (elements: HTMLElement[][]): number[] => {
   const stepStartIndices: number[] = [];
   for (let i = 0; i < elements.length; i++) {
     const currentStepEls = elements[i];
