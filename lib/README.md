@@ -1,9 +1,14 @@
 # TypingFX <img src="https://raw.githubusercontent.com/mayank1513/mayank1513/main/popper.png" style="height: 40px"/>
 
-[![test](https://github.com/react18-tools/typingfx/actions/workflows/test.yml/badge.svg)](https://github.com/react18-tools/typingfx/actions/workflows/test.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/aa896ec14c570f3bb274/maintainability)](https://codeclimate.com/github/react18-tools/typingfx/maintainability) [![codecov](https://codecov.io/gh/react18-tools/typingfx/graph/badge.svg)](https://codecov.io/gh/react18-tools/typingfx) [![Version](https://img.shields.io/npm/v/typingfx.svg?colorB=green)](https://www.npmjs.com/package/typingfx) [![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/typingfx.svg)](https://www.npmjs.com/package/typingfx) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/typingfx) [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
+[![test](https://github.com/react18-tools/typingfx/actions/workflows/test.yml/badge.svg)](https://github.com/react18-tools/typingfx/actions/workflows/test.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/aa896ec14c570f3bb274/maintainability)](https://codeclimate.com/github/react18-tools/typingfx/maintainability)
+[![codecov](https://codecov.io/gh/react18-tools/typingfx/graph/badge.svg)](https://codecov.io/gh/react18-tools/typingfx)
+[![Version](https://img.shields.io/npm/v/typingfx.svg?colorB=green)](https://www.npmjs.com/package/typingfx)
+[![Downloads](https://img.jsdelivr.com/img.shields.io/npm/d18m/typingfx.svg)](https://www.npmjs.com/package/typingfx)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/typingfx)
 
 > **⚡ Customizable, smooth, and snappy typing animations for React**  
-> Animate your text like a pro — fully compatible with React 18/19, Next.js 14/15, and React Server Components.
+> ✨ Animate your text like a pro — fully compatible with React 18/19, Next.js 14/15, and React Server Components.
 
 ---
 
@@ -14,10 +19,12 @@
 - 🔁 Step-based sequences with infinite looping
 - 💅 JSX-ready — animate styled, rich text effortlessly
 - 🧠 Honors `prefers-reduced-motion` accessibility setting
-- ⚡ Hybrid CSS + JS for best performance
+- 🚀 Hybrid CSS + JS for best performance
+- ⚡ Smarter performance: animation pauses 💤 when the tab loses focus — saving CPU and improving battery life without breaking the flow.
+- 🎨 Fully customizable cursor with auto-blink
+- 🔁 Infinite/controlled looping
 - 💡 Fully typed with TypeScript
 - 🧩 SSR-safe and RSC-compatible
-- 🚫 No runtime dependencies
 
 ---
 
@@ -224,14 +231,80 @@ If you want to display a number instead of pausing, convert it to a string:
 
 ### ⚠️ Memoization Matters
 
-To prevent unintended animation restarts on re-renders, **memoize** your `steps` or `children` using `useMemo`:
+~~To prevent unintended animation restarts on re-renders, **memoize** your `steps` or `children` using `useMemo`:~~
+
+~~const steps = useMemo(() => ["One", "Two", "Three"], []);~~
+
+`TypeOut` is memoized by default to **prevent unwanted animation restarts and infinite loops**.
 
 ```tsx
-const steps = useMemo(() => ["One", "Two", "Three"], []);
-<TypeOut steps={steps} />;
+<TypeOut steps={steps} />
 ```
 
-This is especially useful in dynamic React apps or when props change frequently.
+> 🔁 It **ignores all prop changes after first render**, including `paused`, `speed`, etc.
+
+- 🧊 Props are **frozen on mount**
+- 🧠 Re-renders won't restart animation
+- ✅ To re-run animation with new `steps`, **change the `key`** to remount
+
+```tsx
+<TypeOut key={id} steps={steps} />
+```
+
+---
+
+### 🧩 Dynamic Prop Updates (Without Re-renders or Infinite Loops)
+
+Want to **update props on the fly** (e.g., pause/resume, adjust speed) without triggering full React re-renders or loop traps?
+
+Use the `useUpdate()` hook **with double parentheses**:
+
+```ts
+import { useUpdate } from "typeout";
+
+export function Demo() {
+  const [paused, setPaused] = useUpdate("demo")(state => [state.paused, state.setPaused]);
+  // if you want to update props globally do not pass any id -> useUpdate()(state => [...])
+  return (
+    <div className={styles.demo}>
+      <button onClick={() => setPaused(!paused)}>{paused ? "Resume" : "Pause"}</button>
+      <TypeOut steps={steps} storeId="demo" />
+    </div>
+  );
+}
+```
+
+> 🎯 `useUpdate()` returns an isolated reactive store per `id`. These updates:
+>
+> - Take effect **immediately**
+> - Don’t rely on props or re-renders
+> - Work perfectly with interactive controls
+
+---
+
+### 🔥 Important Caveats
+
+- ⚠️ `steps` **cannot be updated dynamically** — changing them requires a remount via a new `key`.
+- 💥 remounting via key will kill the current animation and start new one.
+- ✅ All other animation props are supported via `useUpdate()`.
+
+---
+
+### ✅ Supported Setters
+
+| Setter                    | Description                            |
+| ------------------------- | -------------------------------------- |
+| `setSpeed(speed)`         | Typing speed (chars/sec)               |
+| `setDelSpeed(delSpeed)`   | Deletion speed (chars/sec)             |
+| `setNoCursor(boolean)`    | Toggle cursor visibility               |
+| `setNoCursorAfterAnimEnd` | Hide cursor after animation ends       |
+| `setRepeat(count)`        | How many times to repeat the animation |
+| `setForce(boolean)`       | Override user’s reduced motion setting |
+| `setPaused(boolean)`      | Pause or resume                        |
+| `setComponentAnimation()` | Update animation for custom components |
+
+> ℹ️ These updates are **instance-local**, fast, and non-intrusive.
+> Use the `storeId` prop to group/manage the animation props across TypeOut instances.
 
 ---
 
@@ -433,6 +506,16 @@ TypingFX supports JSX out of the box! You can mix `<strong>`, `<code>`, emojis, 
 </details>
 
 ---
+
+## Updates
+
+### Removed `next` from peerDependencies 🧼
+
+`next` was previously listed in `optionalPeerDependencies` only to indicate compatibility. It has been removed:
+
+- ✅ TypingFX still works perfectly in Next.js (including App Router, SSR, RSC)
+- 🧼 Avoids triggering npm warnings in non-Next projects
+- 📚 Compatibility now noted in docs + keywords only
 
 ## 📁 License
 
