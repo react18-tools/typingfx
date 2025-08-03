@@ -1,4 +1,4 @@
-import { create } from "kosha";
+import { create, StateSetter, StoreCreator } from "kosha";
 import { HTMLProps } from "react";
 
 export type ComponentAnimation = {
@@ -42,11 +42,6 @@ export const defaultCommonProps: ICommonProps = {
   paused: false,
 };
 
-interface ITypeoutStore extends ICommonProps {
-  // JSON.stringified variables to avoid unnecessary re-renders
-  variables: string;
-}
-
 interface ITypeoutStoreActions {
   setSpeed: (speed: number) => void;
   setDelSpeed: (delSpeed: number) => void;
@@ -56,12 +51,10 @@ interface ITypeoutStoreActions {
   setForce: (force: boolean) => void;
   setPaused: (paused: boolean) => void;
   setComponentAnimation: (componentAnimation: ComponentAnimation | undefined) => void;
-  setVariables: (variables: string) => void;
 }
 
-export const useUpdate = create<ITypeoutStore & ITypeoutStoreActions>(set => ({
+const storeCreator: StoreCreator<ICommonProps & ITypeoutStoreActions> = set => ({
   ...defaultCommonProps,
-  variables: "",
   setSpeed: speed => set({ speed }),
   setDelSpeed: delSpeed => set({ delSpeed }),
   setNoCursor: noCursor => set({ noCursor }),
@@ -70,5 +63,14 @@ export const useUpdate = create<ITypeoutStore & ITypeoutStoreActions>(set => ({
   setForce: force => set({ force }),
   setPaused: paused => set({ paused }),
   setComponentAnimation: componentAnimation => set({ componentAnimation }),
-  setVariables: variables => set({ variables }),
-}));
+});
+
+const defaultStore = create(storeCreator);
+
+const storeMap: Record<string, typeof defaultStore> = {};
+
+export const useUpdate = (id?: string) => {
+  if (!id) return defaultStore;
+  storeMap[id] ??= create(storeCreator);
+  return storeMap[id];
+};

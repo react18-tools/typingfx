@@ -2,7 +2,7 @@
 
 import { TypeOut, useUpdate } from "typingfx";
 import styles from "./demo.module.scss";
-import { HTMLProps, useEffect, useMemo, useState } from "react";
+import { HTMLProps, useEffect, useState } from "react";
 
 /** Component to test rendering of custom component in typingfx */
 const TestComponent = ({ children }: HTMLProps<HTMLElement>) => (
@@ -24,22 +24,19 @@ const steps = [
 ];
 /** React live demo */
 export function Demo() {
-  const [paused, setPaused] = useUpdate(state => [state.paused, state.setPaused]);
+  const [paused, setPaused] = useUpdate()(state => [state.paused, state.setPaused]);
   const [user, setUser] = useState<{ name: string }>();
   useEffect(() => {
     setTimeout(() => {
       setUser({ name: "Mayank" });
     }, 900);
   }, []);
-  const welcome = useMemo(
-    () => (
-      <>
-        {1000}Welcome <i>{`${user?.name},`}</i> {500}How can I help you?{-3000}
-        <TestComponent />
-        {5000}Sounds good!
-      </>
-    ),
-    [user],
+  const welcome = (
+    <>
+      {1000}Welcome <i>{`${user?.name},`}</i> {500}How can I help you?{-3000}
+      <TestComponent />
+      {5000}Sounds good!
+    </>
   );
   return (
     <div className={styles.demo}>

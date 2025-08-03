@@ -240,12 +240,34 @@ If you want to display a number instead of pausing, convert it to a string:
 <TypeOut steps={steps} />
 ```
 
-> `TypeOut` is memoized by default. Only changes to the `paused` prop trigger updates.
+> `TypeOut` is memoized by default.
 >
-> To re-run the animation on other prop changes (like `steps`), either:
->
-> - Toggle `paused` off and on, or
-> - Change the `key` prop to force a remount and pick up new props
+> To re-run the animation on changes to `steps`, Change the `key` prop to force a remount and pick up new props
+
+## 🪄 Update Props Dynamically (Without complete Re-render or loop traps)
+
+You can now update all the props except `steps` **on the fly** using the `useUpdate()()` hook — no need to remount or trigger full re-renders. This is ideal for dynamic UIs or interactive controls.
+
+```ts
+import { useUpdate } from "typeout";
+```
+
+### ✅ Supported Setters
+
+| Setter                    | Description                            |
+| ------------------------- | -------------------------------------- |
+| `setSpeed(speed)`         | Typing speed (chars/sec)               |
+| `setDelSpeed(delSpeed)`   | Deletion speed (chars/sec)             |
+| `setNoCursor(boolean)`    | Toggle cursor visibility               |
+| `setNoCursorAfterAnimEnd` | Hide cursor after animation ends       |
+| `setRepeat(count)`        | How many times to repeat the animation |
+| `setForce(boolean)`       | Override user’s reduced motion setting |
+| `setPaused(boolean)`      | Pause or resume                        |
+| `setComponentAnimation()` | Update animation for custom components |
+
+> ℹ️ These updates are local to the instance and don't require re-rendering the full `Typeout` flow.
+
+> Useful for interactive controls, settings panels, and live demos.
 
 ---
 
