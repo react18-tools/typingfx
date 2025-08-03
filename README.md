@@ -25,7 +25,6 @@
 - 🔁 Infinite/controlled looping
 - 💡 Fully typed with TypeScript
 - 🧩 SSR-safe and RSC-compatible
-- 🚫 No runtime dependencies
 
 ---
 
@@ -250,7 +249,20 @@ You can now update all the props except `steps` **on the fly** using the `useUpd
 
 ```ts
 import { useUpdate } from "typeout";
+
+export function Demo() {
+  const [paused, setPaused] = useUpdate("demo")(state => [state.paused, state.setPaused]);
+  // if you want to update props globally do not pass any id -> useUpdate()(state => [...])
+  return (
+    <div className={styles.demo}>
+      <button onClick={() => setPaused(!paused)}>{paused ? "Resume" : "Pause"}</button>
+      <TypeOut steps={steps} id="demo" />
+    </div>
+  );
+}
 ```
+
+> Each id creates an isolated store with its own animation state — perfect for multiple Typeout components in one view without cross-interference.
 
 ### ✅ Supported Setters
 
